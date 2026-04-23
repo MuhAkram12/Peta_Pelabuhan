@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Peta Interaktif Perikanan</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
+}
+
+/* CONTAINER */
+.map-container {
+  position: relative;
+  width: 1000px;
+  max-width: 1280px;
+  margin: 30px auto;
+}
+
+/* GAMBAR */
+.map-image {
+  width: 100%;
+  display: block;
+}
+
+/* SVG */
+.map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* AREA DASAR */
+.area {
+  stroke: transparent;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* HOVER (tidak merusak warna asli) */
+.area:hover {
+  stroke: #ffffff9b;
+}
+
+/* ACTIVE */
+.area.active {
+  stroke: #00ffff;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px #00ffff7c);
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+/* BOX */
+.modal-content {
+  width: 900px;
+  background: #1e1e1e;
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+
+
+@keyframes fadeIn {
+  from {opacity:0; transform:scale(0.9);}
+  to {opacity:1; transform:scale(1);}
+}
+
+/* GAMBAR */
+.modal img {
+  width: 380px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* TEKS */
+.modal-text {
+  flex: 1;
+}
+
+.modal-text h2 {
+  margin: 0;
+}
+
+.modal-text h3 {
+  margin-top: 10px;
+  color: #00ffaa;
+}
+
+/* CLOSE */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 26px;
+  cursor: pointer;
+}
+</style>
+
+</head>
+<body>
+
+<div class="map-container">
+  <img src="peta.jpg" class="map-image">
+
+  <svg viewBox="0 0 1280 905" class="map-overlay">
+
+    <!-- KONAWE SELATAN (HIJAU MUDA) -->
+    <path d="M393 430.5L391.5 426L399 428H412L435.5 426L446 421L454.5 415L463.5 413.5H468.5L470 415L473.5 416.5L483.5 417.5V413.5H492H504.5L510 419L522.5 426.5L527 431L540 426.5L543.5 420.5L551.5 415L557 416L559 421.5L555.5 428.5L554.5 433L558 439.5L556 443.5L561.5 452H568L570.5 454L568 443.5L575 446.5L581.5 449H592L595.5 446.5L601 449L600 441L593.5 437.5L585.5 433L584 426.5L600 427.5L604.5 429L608.5 434.5L613.5 450V463L615.5 466V471L612.5 475.5L611 485.5L614.5 490V495.5L613.5 504.5L608 512L600.5 513.5L597.5 518L594 513.5L590.5 512L579.5 504.5L573.5 500V494L568 492V488.5L564 484L558 490L559 496.5L565 503L567 508L576 517H582L583 525.5L577 532.5L572.5 529L568 522.5L560.5 526.5V521L550.5 512L542.5 506.5H536.5L533 511L529.5 514L519 519L516 514L511 511H504.5L501 514L497.5 517L489 521L481.5 525H474.5L466 529H460V526L458.5 521L452.5 519L447.5 521L445.5 526V530.5L443 533.5L435 538.5L427 539.5L425 532.5L417.5 530.5L413.5 529L411.5 524L399 514.5L389 509L379 505.5L374.5 502H394L398 500.5L402 495.5L403 488L404 482.5L402 477.5L404 471L406 465L407 459.5L406 453.5L400.5 445.5L397 438.5L393 430.5Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('konawe_selatan', this)" />
+
+    <!-- CONTOH WILAYAH LAIN -->
+    <path d="M515.5 391C515.833 391 516.7 390.6 517.5 389L523 395.5L524.5 396.5L527.5 397.5H534.5H543.5L545.5 399H549L547.5 402.5L543 407L544.5 410L551 414L551.5 415L545.5 419L543.5 421.5L541.5 425L538 426L534.5 427.5L529.5 429.5L526.5 431L525.5 427L522 425L516.5 421.5L512 418.5L509 416.5L505.5 414V410.5L508 405.5L510.5 401L512 398.5L514 394L515.5 391Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('kendari', this)" />
+
+    <path d="M658 520.5L659.5 521.5L660.5 522.5L663 523L665 526.5L670.5 527.5L674 536L678 539.5L683 550L687 560L684 564L683 569L687.5 571.5L690 584.5L688 593.5V605L690 610.244V616L689 617.5L686.5 617L680.5 612V604.5V598L678 594.5L675.5 594H672L673.5 591L674 587L671.5 584.5L668.5 581.5L666 580L664.5 582.5L665 585.5L664 588L663.5 592.5L666.5 597.5L665.5 600.5L668.5 602.5L667.5 608L667 613.5H662.5L660.5 615L657.5 613.5H653L649 610L651.5 607.5L656 605L658 602.5V594.5C658 594.1 657.667 592.333 657.5 591.5L655 592L654 596L651.5 595L647.5 597L647 598L649 602.5L647 605L641.5 606.5L640 612L639.5 618.5L640.5 620L641.5 629.5L637.5 637L633.5 639.5L631 643L629 649.5L627.5 655V657L631 659L633.5 663.5V668.5L632.5 674.5L632 678.5L630 681L627 685.5H624.5L620.5 683.5L616.5 681L610 680.5L605 679.5L603 677L602.5 670.5L603 660.5L605 654L606.5 647L608 639.5L608.5 636.5L609.5 632.5L615 625.5L617.5 622L619 615.5L618 606.5L616 603.5L613.5 600L611.5 597L612.5 594.5L615.5 589L615 585L615.5 581L618.5 573.5L621 568L623 563.5L625.5 558L628 556L628.5 555L624.5 553L621.5 553.5L617 550.5L613.5 546L609.5 545.5L607.5 542L608.5 538.5L611 533.5L613.5 529.5L616.5 525L617 523L621.5 521L624 518.5L627 514L632.5 511L638.5 507L643 504L648.5 501L652.5 500.5L655.5 501.5L658.5 503.5L658 507L657 508.5L654 510.5L651.5 512L650.5 512.5L651 514L654 515.5L656.5 516.5L657.5 517L658 520.5Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('buton_utara', this)" />
+
+        
+    <path d="M581 768.5H577.5V766.5L578.5 764.5L581 757.5L582.5 755L583 751V745.5V742.5L580.5 739.5L578.5 737.5L577 737H574V735.5L572.5 731L570.5 728.5L567.5 727L564.5 726.5L566.5 722.5H564.5L562.5 721L569 710V713L567.5 717V718L569 717L573 710H577L580 711.5L582 712.5L588 709L592.5 705.5L593.5 702.5L589.5 696.5L587.5 697L585 699L582.5 703L580.5 705.5L579 702.5V700L581.5 696.5L580 693.5H578L577 694L576 695L579 689L581 683.5L583.5 679.5L588.5 677L589 673L587.5 671L591.5 670.5L595.5 672L598 675L600.5 678L605 679.5L615.5 680.5L618 683L621 684.5L626 686.5L625 690L621 693.5L621.5 694.5L622.5 697L623 700L626.5 703L629 701.5L634.5 693.5L637.5 690L641 686.5L645 683.5H648.5L652 687L657 688.5L664 696L665 699.5L666 701L669 704L675.5 708L681 710L685 714.5L692 716.5V720L689.5 723.5L685.5 730.5L681 735.5L673.5 743L669.5 746L663.5 749.5L653.5 751.5L650.5 754L644 757.5L642.5 755.5L641 752.5L638 748L636 746L633 746.5L630.5 748.5L626 751L620.5 755.5L615 756.5L610.5 759L605 764.5L602.5 769L603 773L604.5 775L609.5 773H611L615 774L614.5 785L612 788.5L609 791.5L606.5 794L604.5 798L597 807L594 804.5L590.5 799.5L589.5 796L589 788.5V777.5L590 771.5L589 769.5L585 768.5H581Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('buton', this)" />
+
+    <path d="M536 768L537.5 766L538.5 762.5L541.5 761L543 760L547.5 761.5H549.5L553 758.5L555 753.5V749.5L549.5 748.5L550.5 747L552.5 741.5L555 739.5V732.5L558 729.5L563.5 727L569.5 729.5L572 731.5V735.5L576 738L581 741.5L583 745V753L580.5 758.5L577.5 763.5L575.5 768.5L569 769.5H564H560.5L557 772.5L553.5 773.5L548.5 772L544.5 775L541.5 777.5L538 778C537 777.333 534.9 775.9 534.5 775.5C534.1 775.1 533.667 774 533.5 773.5L534 770.5L536 768Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('bau_bau', this)" />
+          
+    <path d="M189 354L185.5 352L187 349.5L189.5 346.5L191 343.5L197.5 341.5L209 337L215.5 335L220 331.5V328.5L220.5 325L223 323.5L226.5 323L230 323.5L232.5 326.5L235.5 330L239 332L242 334L247.5 338.5L254 341L259 342L268 345L274 345.5L279.5 348.5L285.5 353.5L289 357.5L294.5 362.5L298.5 364.5L301.5 368L305 370L306.5 372L305 374V378L306.5 383L309 386.5L311.5 389L315 389.5L317.5 391.5L318 393.5L317.5 395.5L316 397.5L315 400L317.5 404.5L321.5 408.5L324 410.5L328 416.5L331 417L333.5 418L335.5 421L337.5 423.5H340H341L343.5 425L344.5 429V434.5L345.5 437.5L346 443.5V448.5L345.5 453L344.5 455.5L342.5 458L339.5 461L340 463L338 468.5L337.5 471L337 472.5V477.5L334.5 479.5L333 482.5L333.5 487.5L334 492.5V499L334.5 500L337.5 503L340 506L342.5 509.5L343 512L344.5 515L346.5 518L347 520.5L345.5 522.5L341.5 523.5L340 524.5L338.5 527.5L336.5 529L333.5 533L333 537L331 539.5L327 545L325 549L323.5 553L323 557.5L319.5 558.5L319 555.5L318 551.5L316.5 548C315.667 547.667 313.9 547 313.5 547H309L306.5 548.5L303 549L297.5 549.5L294 548.5L291 549L286.5 551H282.5L276.5 553.5L274 553L275.5 548L276.5 543.5L277 539.5L278 536L280 529L282 526.5L284 521L285.5 516L286 511.5L287 505.5L284 503L283 501.5V499L284.5 496L285 493.5L286 489L287.5 483L288.5 476.5V473.5L287 471.5V471L288.5 469L291 471H296L292.5 473L291.5 473.5L290.5 474.5L293.5 476L296.5 474.5L300 471.5L300.5 465.5L301 462L303 459.5L303.5 456V454V453L305 451L308 449V447V444.5L307.5 441L305.5 439.5L306.5 432.5L305.5 429L305 427.5L299.5 424.5L298 424L292.5 423.5L290 422L288.5 420V418.5L286.5 418L274.5 416L272.5 415.5L269.5 416.5L268 417L266.5 416.5L264 414L261.5 412.5L258 412L255 412.5L250.5 413.5L246.5 410.5L244 409L239.5 401.5L237.5 400L236 397.5V393.5L235 389L232.5 386L229.5 384L228 386L226.5 386.5L226 389L223.5 390.5L222 391L221 392L219.5 391L220 389.5L221.5 388L222.5 386.5L223 385L223.5 384L221.5 382.5L219.5 382L218.5 380.5L219.5 379.5L221.5 378L222.5 376.5L221.5 373.5L219.5 370.5L216 370L209.5 369.5L207 370.5L205.5 371.5L202.5 369L199.5 365.5L198.5 363L197 361L193.5 358.5L192 355.5L189 354Z" 
+          fill="transparent"
+          class="area"
+          onclick="openModal('kolaka', this)" />
+
+    <path d="M274 558V555.5V554.5L275 553.5L276.5 554.5L279.5 552.5L280.5 552H284L286 549.5L289.5 549H292.5L295.5 549.5L298.5 550.5L303.5 549.5L306.5 548L309 546.5L312.5 546L315.5 547L318 550L318.5 554.5L319.5 557.5L321 558L322.5 556.5L325 552.5L326 549.5L329 543.5L331 538.5L333.5 538L334.5 536.5L333.5 533L334.5 531L336 528.5L340.5 529L341 525.5L342 523.5H346L349 520.5L351 517L354.5 512L361 509L365 507.5L369 504.5L371.5 503.5L373.5 502.5L376 504L386.5 509.5L391 511.5L394.5 515L400 514.5L407 521.5L410.5 525L411.5 528.5L412.5 529L417 529.5L419.5 531L422.5 531.5L424.5 533.5V536.5V541.5L423 542.5L419.5 544L418 547.5L416 552.5L414 558.5L412.5 561L411.5 562.5L410.5 565L409 567L408 568.5L407.5 584L408 586L409 589V591.5L410.5 595.5H411.5L414.5 594.5L417 594L419.5 594.5L420.5 597.5V600L419.5 601.5L420 602.5H420.5L422 604.5V605.5L423.5 606L425.5 607L423 609L420 610.5L418.5 613.5L416 615L414.5 616.5L413 617.5L410.5 618.5L410 620L409 620.5L407 621L406 621.5L403.5 625.5H400L396.5 627.5L394 626.5L391 625.5L388.5 626L383 623H379.5L375 622.5L368.5 621L360 615L356.5 611.5H351L349 613L347 612.5L342.5 613.5L337.5 612.5L335.5 613.5L333 615L330 616L325.5 615L321.5 611.5L319 607L314 606L311.5 602.5L309.5 600.5L308.5 603H304L301 604.5L298 603.5L296.5 602.5L295 599L293.5 597L290.5 596L287.5 595L284.5 594L283 591L282.5 590V588.5V583L280.5 581.5L279 579.5L277.5 577L276.5 576L274 576.5L273 576V574.5L273.5 570L274 568L272.5 566.5V564V562.5V560L274 558Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('bombana', this)" />
+
+    <path d="M581 816.5L582 818.5L586.5 819.5L590 818.5L592.5 816.5V814.5L594 811.5L595.5 807.5L594 804.5L591.5 802L590 796.5L589 790.5L589.5 780L588 772.5V769.5L583 768.5H577.5L570.5 769.5H562.5L559 770.5L556.5 772.5L554.5 774.5L551.5 775L549.5 773.5H546.5L545.5 775L543.5 777.5L540 778.5L538 780V785.5L540 789L542 793.5V797L543 800.5L545.5 803.5L546.5 806.5V809.5L548 811.5L549.5 814.5L551.5 816.5L553 819.5H555.5L559 815.5L562.5 812.5L565 808.5L567.5 803.5L568.5 800.5H570.5L572 802V804.5L570.5 807.5V809.5V812.5L572 815.5L573.5 816.5V814.5L574.5 812.5L576.5 808.5L577.5 807.5V804.5L579.5 803.5L581 805.5L582 807.5V808.5V810.5V812.5L581 814.5V816.5Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('buton_selatan', this)" />
+
+    <path d="M487 638L486.5 636V635L488 634.5L490 634L493 632.5L494.5 630.5L502.5 630L507 630.5L510.5 632L517.5 634L523.5 636.5L531.5 642.5L535.5 647L539 649L541 650L542.5 647V644L543 640.5L545.5 638L547.5 636L551 635L553.5 634L555.5 631L557 629L558 627L557 625L552.5 622L549 619.5L547 618.5L546 616.5L545.5 613.5L544.5 610.5L542.5 609.5L540 609L537.5 607.5L535.5 605L544.5 596L552 590.5L557 587.5V585.5L555.5 582L554 580.5L553 578.5L554.5 577L555.5 575L553.5 574L552 573L551.5 570.5L551 568.5L550.5 566L552.5 564.5L555 562.5L557.5 562L558 561L559 560L559.5 558.5L563.5 559L564.5 560.5L569.5 561.5L574 564.5L575 566V567.5L574.5 568.5L575.5 572V573.5L574.5 575H573L571.5 575.5L572 578L575 585.5L577 596.5L578 601L577.5 605.5L575.5 608.5L574 610V614.5V615.5L576 618.5V620.5L576.5 622L578 623.5H579H580.5L582 629V638.5V641.5L583 643V643.5L582 644V645H581L578.5 643L576.5 642L575 641.5L573.5 642.5L569.5 650L567 653.5L562.5 659L559.5 663H556.5L551.5 667L549.5 669L547.5 672L546.5 675L547 676.5L547.5 677.5V679L545 682L543 686L541.5 688.5L540 691.5L540.5 696V698L542.5 699L546 698.5L548.5 697L549.5 698L549 701.5L546.5 703.5L543 705H537.5H534L531 701L528.5 699.5L526.5 698.5H524.5L522 700L519 702L514.5 705L510.5 707L508 707.5L504 705L499.5 702.5L497.5 701L497 698.5L495.5 697.5H491.5L489 696L486.5 693.5L485.5 691.5L484.5 688.5L481.5 687L476.5 686.5L475 685.5L476 682L477.5 678.5L480 675.5L484.5 675L489.5 673L491.5 672L492 669.5L491.5 668V664L489.5 662L489 661.5V660L490.5 656.5L491 653.5L491.5 648.5L490.5 645V642L489 638.5L487 638Z"
+          fill="transparent"
+          class="area"
+          onclick="openModal('muna', this)" />
+
+  </svg>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <div class="close-btn" onclick="closeModal()">×</div>
+
+    <img id="modal-img" src="">
+
+    <div class="modal-text" id="modal-text"></div>
+  </div>
+</div>
+
+<script>
+const wilayahData = {
+  kendari: {
+    wilayah: "Kota Kendari",
+    pelabuhan: "PP Sodoha",
+    luas: "9,91 Ha",
+    status: "Aktif",
+    gambar: "images/sodoha.jpg",
+    fasilitas: [
+      "Cold Storage","Pabrik Es Mini","Dermaga","Pintu Gerbang","Pos Jaga",
+      "Kantor Administrasi","Mesjid","MCK","Gedung Pertokoan/Kios Nelayan",
+      "Tempat Pelelangan Ikan","Rumah Kapal","Aula Pertemuan"
+    ]
+  },
+
+  konawe_selatan: {
+    wilayah: "Kabupaten Konawe Selatan",
+    pelabuhan: "PP Torobulu",
+    luas: "6,82 Ha",
+    status: "Aktif",
+    gambar: "images/torobulu.jpg",
+    fasilitas: [
+      "Dermaga","Kolam Pelabuhan","Jalan Kompleks","Drainase","Turap",
+      "Kantor Administrasi","Tempat Pemasaran Ikan","Cold Storage","SPBN",
+      "Pabrik Es","Pos Jaga","Aula Pertemuan","Masjid","Kios Nelayan",
+      "Rumah Petugas","Rumah Genset","Rumah Speed","Rumah Nelayan","MCK"
+    ]
+  },
+
+  buton_utara: {
+    wilayah: "Kabupaten Buton Utara",
+    pelabuhan: "PP Minaminanga",
+    luas: "20,37 Ha",
+    status: "Aktif",
+    gambar: "images/minaminanga.jpg",
+    fasilitas: ["Dermaga","Tempat Pelelangan Ikan","Kantor TPI"]
+  },
+
+  buton: {
+    wilayah: "Kabupaten Buton",
+    pelabuhan: "PP Pasar Wajo",
+    luas: "11,53 Ha",
+    status: "Aktif",
+    gambar: "images/pasar_wajo.jpg",
+    fasilitas: [
+      "Dermaga","Kolam Pelabuhan","Jalan Kompleks","Drainase","Turap",
+      "Kantor Administrasi","Tempat Pemasaran Ikan","Cold Storage","ABF",
+      "SPBN","Pabrik Es","Pos Jaga","Pintu Gerbang","Masjid",
+      "Gedung Koperasi","Rumah Kapal","Rumah Petugas",
+      "Gedung Saver","Gedung Pengolahan","Gedung Perbengkelan"
+    ]
+  },
+
+  bau_bau: {
+    wilayah: "Kota Bau-Bau",
+    pelabuhan: "PP Wameo",
+    luas: "12,82 Ha",
+    status: "Aktif",
+    gambar: "images/wameo.jpg",
+    fasilitas: [
+      "Dermaga","Kolam Pelabuhan","Drainase","Turap","Kantor Administrasi",
+      "Tempat Pemasaran Ikan","Cold Storage","ABF","Pabrik Listrik",
+      "IPAL","MCK","Pos Jaga","Pintu Gerbang",
+      "Tempat Pengepakan Ikan","Tempat Pendaratan Ikan"
+    ]
+  },
+
+  bombana: {
+    wilayah: "Kabupaten Bombana",
+    pelabuhan: "PP Rumbia Tengah",
+    luas: "44,99 Ha",
+    status: "Aktif",
+    gambar: "images/rumbia.jpg",
+    fasilitas: [
+      "Causeway","Kolam Pelabuhan","Jalan Kompleks","Drainase","Turap",
+      "Tempat Pemasaran Ikan","Cold Storage","ABF","MCK","Pos Jaga","Kios Nelayan"
+    ]
+  },
+
+  kolaka: {
+    wilayah: "Kabupaten Kolaka",
+    pelabuhan: "PP Mangolo",
+    luas: "10,48 Ha",
+    status: "Aktif",
+    gambar: "images/mangolo.jpg",
+    fasilitas: [
+      "Dermaga","Causeway","Kolam Pelabuhan","Jalan Kompleks","Drainase",
+      "Kantor Administrasi","Tempat Pemasaran Ikan","Cold Storage",
+      "Pabrik Es","TPS","MCK","Pos Jaga","Pintu Gerbang",
+      "Kios Nelayan","Rumah Petugas","Area Penjemuran Ikan"
+    ]
+  },
+
+  buton_selatan: {
+    wilayah: "Kabupaten Buton Selatan",
+    pelabuhan: "PP Sampolawa",
+    luas: "12,53 Ha",
+    status: "Aktif",
+    gambar: "images/sampolawa2.jpg",
+    fasilitas: [
+      "Talud"
+    ]
+  },
+
+  muna: {
+    wilayah: "Kabupaten Muna",
+    pelabuhan: "PP Laino",
+    luas: "20,10 Ha",
+    status: "Aktif",
+    gambar: "images/Laino2.jpg",
+    fasilitas: [
+      "Dermaga","Jalan Kompleks","Pemasaran Ikan","Pos Jaga"
+    ]
+  }
+};
+
+/* OPEN MODAL */
+function openModal(id, element) {
+  const data = wilayahData[id];
+
+  document.querySelectorAll('.area').forEach(el => el.classList.remove('active'));
+  element.classList.add('active');
+
+  document.getElementById("modal-img").src = data.gambar;
+
+  document.getElementById("modal-text").innerHTML = `
+    <h2>${data.wilayah}</h2>
+    <h3>${data.pelabuhan}</h3>
+
+    <p><b>Luas:</b> ${data.luas}</p>
+    <p><b>Status:</b> ${data.status}</p>
+
+    <p><b>Memiliki Fasilitas:</b></p>
+    <ul>
+      ${data.fasilitas.map(f => `<li>${f}</li>`).join("")}
+    </ul>
+  `;
+
+  document.getElementById("modal").style.display = "flex";
+}
+
+
+
+/* CLOSE */
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+
+  document.querySelectorAll('.area').forEach(el => {
+    el.classList.remove('active');
+  });
+}
+</script>
+
+</body>
+</html>
